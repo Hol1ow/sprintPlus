@@ -9,35 +9,44 @@ import net.minecraft.client.util.InputUtil;
 
 public class KeyMappingHelper {
     private final static String TRANS_KEY_KEY = "key.sprintPlus.";
-    private final static String TRANS_KEY_CAT = "category.sprintPlus.text";
+    private final static String TRANS_KEY_CAT = "key.categories.movement";
 
     private static boolean shouldSprint = false;
-    private static boolean holdingSprint = false;
+    private final static int INTERVAL = 2;
+    private static int repeatance = 0;
+    private static int delay = 0;
 
     public static void register() {
-        KeyBinding sprintPlusToggle = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                TRANS_KEY_KEY + "sprintPlusToggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_CONTROL, TRANS_KEY_CAT));
-
-        KeyBinding sprintPlusHold = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                TRANS_KEY_KEY + "sprintPlusHold", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, TRANS_KEY_CAT));
+        KeyBinding sprintPlus = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                TRANS_KEY_KEY + "sprintPlusKey", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_CONTROL, TRANS_KEY_CAT));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            //logic for toggle
-            if (sprintPlusToggle.wasPressed()) {
-                shouldSprint = true;
-            }
-
-            if (client.options.forwardKey.wasPressed()) {
-                if (shouldSprint && client.player != null && shouldSprint != client.player.isSprinting()) {
-                    client.player.setSprinting(shouldSprint);
+            if (client.player != null) {
+                // logic for toggle
+                if (sprintPlus.isPressed()) {
+                    shouldSprint = true;
                 }
-            } else {
-                shouldSprint = false;
-            }
 
-            //logic for holding
-            if (sprintPlusHold.wasPressed() != client.player.isSprinting()) {
-                client.player.setSprinting(holdingSprint);
+                if (client.options.forwardKey.isPressed()) {
+                    if (shouldSprint && shouldSprint != client.player.isSprinting()) {
+                        if (delay < 1) {
+                            client.player.setSprinting(shouldSprint);
+                        } else {
+                            delay--;
+                        }
+                            
+                        // redundancy check in case of serve desync
+                        if (shouldSprint != client.player.isSprinting()) {
+                            repeatance++;
+                            delay = INTERVAL * repeatance;
+                        } else {
+                            repeatance = 0;
+                        }
+                    }
+                } else {
+                    shouldSprint = false;
+                    //
+                }
             }
         });
     }
