@@ -24,7 +24,13 @@ public class KeyMappingHelper {
                     shouldSprint = true;
                 }
 
+                // logic for toggle action
                 if (!client.options.forwardKey.isPressed() && shouldSprint) {
+                    shouldSprint = false;
+                }
+
+                // logic for holding action
+                if (!SprintToggleOption.sprintPlusToggle.getValue() && !sprintPlus.isPressed()) {
                     shouldSprint = false;
                 }
 
@@ -33,7 +39,11 @@ public class KeyMappingHelper {
                         client.options.sprintKey.setPressed(shouldSprint);
                     }
                 } else {
-                    ((StickyKeyBindingUntoggleInvoker) client.options.sprintKey).involkeUntoggle();
+                    ((StickyKeyBindingUntoggleInvoker) client.options.sprintKey).invokeUntoggle();
+                    //kick player off from sprint during holding mode
+                    if (!SprintToggleOption.sprintPlusToggle.getValue()) {
+                        client.player.setSprinting(false);
+                    }
                 }
             }
         });
