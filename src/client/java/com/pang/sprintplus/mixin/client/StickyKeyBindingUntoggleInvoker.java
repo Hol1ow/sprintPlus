@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface StickyKeyBindingUntoggleInvoker {
 	// allow access to untoggle method in order to untoggle sticky key
 	@Invoker("untoggle")
-	public void involkeUntoggle();
+	public void invokeUntoggle();
 }
