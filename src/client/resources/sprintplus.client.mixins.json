@@ -3,7 +3,8 @@
 	"package": "com.pang.sprintplus.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"StickyKeyBindingUntoggleInvoker"
+		"StickyKeyBindingUntoggleInvoker",
+		"ControlScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
