@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "sprintplus",
 	"version": "${version}",
-	"name": "sprintPlus",
+	"name": "Sprint+",
 	"description": "This is a simply fabric mod enable you to sprint just like every other games.",
 	"authors": [
 		"Hol1ow"
@@ -14,11 +14,8 @@
 	},
 	"license": "GPL-3.0 license",
 	"icon": "assets/sprintplus/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"com.pang.sprintplus.SprintPlus"
-		],
 		"client": [
 			"com.pang.sprintplus.SprintPlusClient"
 		]
